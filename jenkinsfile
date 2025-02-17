@@ -1,0 +1,40 @@
+properties([
+  parameters([
+    string( name: 'COMMIT_ID', defaultValue: 'master', description: 'Commit ID'),
+    string( name: 'USER', defaultValue: 'mc', description: 'user'),
+    choice( name: 'ACTION', choices: ['Config', 'install', 'start', 'deploy']), description: 'perform actions'),
+    [$class       : 'ChoiceParameter',
+     choiceType   : 'PT_SINGLE'
+     description  : 'Select Environment'
+     filterLength : 1,
+     filterable   : false,
+     name         : 'ENV'
+     script       : [$class         : 'GroovyScript',
+                     fallbackScript : [classpath: [], sandbox: false, script: 'return ["Could not get Thread.currentThread()"]'],
+                     script         : [classpath: [], sandbox: false, script: '''
+def build_path = Thread.currentThread().toString()
+def regexp = /\\s+(\\/.*?)\\s+/
+def matcher = (build_path = ~ regexp)
+def jobName = matcher[0][1]
+if (jobName.toLowerCase().contains("mtf")) {
+  return ['mtf']
+}
+else {
+  return ['preprod', 'mtf', 'prod']
+}
+                                                                     '''
+                    [$class       : 'CascadeChoiceParameter',
+                     choiceType   : 'PT_SINGLE_SELECT',
+                     description  : '',
+                     filterLength : 1,
+                     filterable   : true, 
+                     name         : 'INSTANCES',
+                     referencedParameters : 'COMMIT_ID, ENV',
+                     script               : [$calss         : 'GroovyScript',
+                                             fallbackScript : [classpath: [], sandbox: false, script: 'return ["Could not get maintenance names"]'],
+                                             
+       
+
+
+ 
+     
