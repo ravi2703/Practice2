@@ -32,7 +32,35 @@ else {
                      referencedParameters : 'COMMIT_ID, ENV',
                      script               : [$calss         : 'GroovyScript',
                                              fallbackScript : [classpath: [], sandbox: false, script: 'return ["Could not get maintenance names"]'],
-                                             
+                                             script         : [classpath: [], sandbox: false,
+                                                               scriipt: '''
+                                                               import jenkins.*
+                                                               import jenkins.model.*
+                                                               import hudson.*
+                                                               import hudson.model.*
+                                                               import groovy.json.JsonSlurper
+                                                               def jenkinsCredentials = com.cloudbees.plugins.credentials.CrdentialsProvider.lookupCredentials(
+                                                                   com.cloudbees.plugins.credentials.Credentials.class,
+                                                                   Jenkins.instance,
+                                                                 null,
+                                                                 null
+                                                               ),
+                                                               for (creds in jenkinsCredentials) {
+                                                                   if creds.id == "Jenkins_ro") {
+                                                                     api_token = creds.apiToken
+                                                                   }
+                                                               },
+                                                               def jsonSlurper = new JsonSlurper()
+                                                               switch(ENV) {
+                                                                   case 'preprod':
+                                                                   get = new URL("https://ci.mkle.int/gitlab/app.git/)
+                                                                   break
+                                                                   case 'mtf':
+                                                                   get = new URL("https://ci.mkle.int/gitlab/app.git/)
+                                                                   break
+
+                              
+                                                  
        
 
 
