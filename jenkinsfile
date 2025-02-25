@@ -58,6 +58,35 @@ else {
                                                                    case 'mtf':
                                                                    get = new URL("https://ci.mkle.int/gitlab/app.git/)
                                                                    break
+                                                                def  respText = get.getInputStream().getText()
+                                                                def respJson = new JsonSlurper().parseText(respText)
+                                                                def instances = []
+                                                                resp.Json.each {
+                                                                     if (it.type == 'tree' ) {
+                                                                               def instance = it.name.tokenize('_')[1]
+                                                                        instances.add(instance)
+                                                                     }
+                                                                }
+                                                                return intances 
+                                                                ' ' '
+                                            ]]],
+    ])
+])//parameters
+pipeline {
+  agent {
+     label 'master'
+  }
+     options { buildDiscarder(logRotator(numToKeepStr: '50')) }
+  stages {
+    stage ('marck the build) {
+      steps {
+          script {
+            currentBuild.description = "ENV: ${ENV} INST: ${INSTANCES} ACT: ${ACTION}"
+          }
+
+       }
+   }
+   stage ('
 
                               
                                                   
