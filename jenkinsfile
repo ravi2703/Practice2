@@ -86,7 +86,35 @@ pipeline {
 
        }
    }
-   stage ('
+   stage ('git checkout') {
+     steps {
+       script {
+         git ref = params.COMMIT_ID
+         if (git ref == '') {
+             git ref = 'ref/heads/master'
+         }
+         if (params.ENV == 'dev') {
+             gitRepoCfg = 'git@ci.mpst.int/ansi.git'
+         }
+         if (params.ENV == 'stage') {
+             gitRepoCfg = 'git@aaa.com/aa.git'
+         }
+         if (params.ENV == 'DEV' || params.ENV == 'stage') {
+             gitRepoPlaybook = 'git@cicd.submodule.git'
+         }
+         
+
+
+
+
+
+
+
+
+
+
+
+
 
                               
                                                   
